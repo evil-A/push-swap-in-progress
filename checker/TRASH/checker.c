@@ -1,56 +1,89 @@
 #include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
-
-int		ft_atoi(const char *str);
-void	fadeout();
-int	ft_isnumeric(int c);
-int	ft_isint(char *num);
+#include <stdlib.h>
 
 typedef struct	s_in
 {
-	int		sz;
-	int		*a;
-	int		*b;
-
+	int	sz;
+	int	*a;
+	int	*b;
 }				t_in;
 
-int		main(int argc, char **argv)
+int		ft_isdigit(int c);
+void	fadeout(void);
+void	ft_isint(t_in *in, char *num, int pos);
+int		ft_atoi(const char *str);
+
+int		init(t_in *in, int size)
 {
-	t_in	in;
-	int		i;
-	int		num;
-		
-	if (argc == 1)
-		return (0);
-	else
-		in.sz = argc - 1;
-	in.a = malloc(sizeof(int) * in.sz);
-	in.b = malloc(sizeof(int) * in.sz);
-	i = 0;
-	while (i < in.sz)
+	in->sz = size - 1;
+	in->a = malloc(sizeof(int) * in->sz);
+	in->b = malloc(sizeof(int) * in->sz);
+//	listas...
+	return (1);
+}
+
+void	iseq(t_in *in)
+{
+	int	i;
+	int	j;
+
+	j = 1;
+	while (j < in->sz)
 	{
-		if (!(ft_isint(argv[i + 1])))
+		i = 0;
+		while (i < j)
 		{
-//			printf("ARGV OK\n");
-			fadeout();
+			if (in->a[i] != in->a[j])
+				i++;
+			else
+				fadeout();
 		}
+		j++;
+	}	
+}	
+
+void	isok(t_in *in)
+{
+	int	i;
+
+	i = 0;
+	while (i + 1 < in->sz)
+	{
+		if (in->a[i] < in->a[i + 1])
+			i++;
 		else
 		{
-//			num = ft_atoi(argv[i + 1]);
-//			printf("NUM: %d\n", num);
-			in.a[i] = ft_atoi(argv[i + 1]);
-			in.b[i] = 0;
+			printf("KO\n");
+			exit  (0);
 		}
+	}
+	printf("OK\n");
+}
+
+int	main(int ac, char **av)
+{
+	t_in	in;
+	int	i;
+	
+	if (ac < 2)
+		fadeout();
+	init(&in, ac);
+	i = 1;
+	while (i < ac)
+	{
+		ft_isint(&in, av[i], i - 1);
 		i++;
 	}
-
+	iseq(&in);
 	i = 0;
 	while (i < in.sz)
 	{
-		printf("%d\t%d\n", in.a[i], in.b[i]);
+		in.b[i] = 0;
+		printf("%d\t\t%d\n", in.a[i], in.b[i]);
 		i++;
 	}
-
+//	ordenar aqui
+	isok(&in);		//Comprueba orden
 	return (0);
 }

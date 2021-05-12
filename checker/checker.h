@@ -6,39 +6,45 @@
 /*   By: evila-ro <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 11:02:05 by evila-ro          #+#    #+#             */
-/*   Updated: 2021/04/07 11:12:50 by evila-ro         ###   ########.fr       */
+/*   Updated: 2021/04/21 21:56:14 by evila-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _FT_CHECKER_H
 # define _FT_CHECKER_H
-# include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
+# include <limits.h>
+# include <ctype.h>
 
-typedef struct			s_lst
+typedef struct	s_list
 {
-	int					content;
-	struct s_lst		*next;
-}						t_lst;
+	void		 	*content;
+	struct s_list	*next;
+}				t_list;
 
-typedef struct	s_in
+typedef struct	s_data
 {
-	int		sz;
-	t_lst	*a;
-	t_lst	*b;
-}				t_in;
+	size_t	a_size;
+	size_t	b_size;
+	t_list	*stack_a;
+	t_list	*stack_b;
+	t_list	*stack_o;
+}				t_data;
 
-int		ft_isdigit(int c);
-void	fadeout(void);
-void	ft_isint(t_in *in, char *num, int pos);
-int		ft_atoi(const char *str);
-int		init(t_in *in, int size);
-void	iseq(t_lst *lst);
-void	ft_lst_add_back(t_lst **alst, t_lst *new);
-void	ft_lstiter(t_lst *lst);
-void	isok(t_lst *lst);
-int	ft_atoi(const char *str);
-void	save(t_in *in, char *num, int pos);
+void	ft_bzero(void *s, size_t n);
+int isnum(char *num);
+int add_number(t_list **alst, long nb);
+t_list	*f(t_list *lst, void *cnt, int (*cp)(void *cnt1, void *cnt2));
+int	long_cmp(void *content1, void *content2);
+void	ft_lstadd_back(t_list **alst, t_list *new);
+void	ft_lstadd_front(t_list **alst, t_list *new);
+t_list	*ft_lstnew(void *content);
+void	ft_lstiter(t_list *lst, void (*f)(void *));
+long	ft_atol(const char *str);
+void	print_number(void *content);
+t_list	*ft_lstlast(t_list *lst);
+void	ft_lstsort(t_list **alst, int (*cmp)());
 
 #endif

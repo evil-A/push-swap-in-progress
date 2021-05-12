@@ -2,66 +2,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct	s_in
+{
+	int	sz;
+	int	*a;
+	int	*b;
+}				t_in;
 
-int	ft_isint(char *num);
-int	ft_isnumeric(int c);
 int	ft_atoi(const char *str);
 
-void	fadeout()
-{
-	printf("Error\n");
-	exit(0);
-}
-
-int		ft_isdigit(int c)
+int	ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
 		return (1);
-	return (0);
+	else
+		return (0);
+}
+void	fadeout(void)
+{
+	printf("Error\n");
+	exit (0);
 }
 
-int	ft_isint(char *num)
+void	ft_isint(t_in *in, char *num, int pos)
 {
 	int	i;
+	int	ret;
 
 	i = 0;
-	while (num[i])
-	{
-		if (!(ft_isnumeric(num[i])))
-		{
-	//		printf("1\n");
-			return (0);
-		}
+	if (num[i] == '-' && num[i] == '+')
 		i++;
-	}
-	if ((ft_atoi(num) < 0))
-		return (0);
-	return (1);
-}
-
-int	ft_isnumeric(int c)
-{
-	if (ft_isdigit(c) || c == '-')
-		return (1);
-	return (0);
-}
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	while ((s1[i] == s2[i]) && s1[i] != '\0' && s2[i] != '\0')
+	while (num[i] != '\0')
 		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	if (ft_isdigit(num[i - 1]))
+		ft_atoi(num);
+	else
+		fadeout();
+	in->a[pos] = ft_atoi(num);
 }
+
 
 int	ft_atoi(const char *str)
 {
-	int	i;
-	int	sign;
-	int	number;
-	int	cypher;
+	int		i;
+	int		sign;
+	long	number;
+	int		cypher;
 
 	i = 0;
 	sign = 1;
@@ -75,11 +61,7 @@ int	ft_atoi(const char *str)
 		i++;
 	while (str[i] >= '0' && str[i] <= '9' && cypher++ != -2)
 		number = (number * 10) + (str[i++] - 48);
-	if (cypher > 19)
-	{
-		if (sign == -1)
-			return (0);
-		return (-1);
-	}
+	if (number * sign > 2147483647 || number * sign < -2147483648)
+		fadeout();
 	return (number * sign);
 }
